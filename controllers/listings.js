@@ -1,5 +1,4 @@
 const Listing =  require("../models/listing.js");
-// const mbxGeocoading = require("@mapbox/mapbox-sdk/services/tilesets")
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({accessToken: mapToken});
@@ -36,6 +35,7 @@ module.exports.createRoute = async(req, res, next)=>{
     newListings.owner = req.user._id;
     newListings.image = {url, filename};
     
+    // Map 
     newListings.geometry = coordinate.body.features[0].geometry
 
     let savedListing = await newListings.save();

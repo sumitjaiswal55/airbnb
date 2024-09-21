@@ -1,6 +1,9 @@
 <% layout("/layouts/boilerplate") -%>
 
-
+    <script>
+        const mapToken = "<%= process.env.MAP_TOKEN %>";
+        const coordinates = "<%- JSON.stringify{listing.geometry.coordinates} %>";
+    </script>
 
     
     <div class="row">
@@ -91,9 +94,8 @@
         <div id="map"></div>
       </div>  
     
-
-<script src="/js/map.js">
-
+<script>
+    src="/js/map.js"
 </script>
 
 
