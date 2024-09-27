@@ -89,16 +89,23 @@ module.exports.deleteRoute = async(req, res) => {
 // Show Route
 module.exports.showRoute = async(req, res)=>{
     let {id} = req.params;
-    const listing = await Listing.findById(id)
-    .populate({path : "reviews", 
-        populate: {
-        path: "author",
-    }
+    let listing = await Listing.findById(id).populate({
+      path:"reviews",
+      populate:{
+        path:"author"
+      }
     })
     .populate("owner");
     if(!listing){
-        req.flash("error", "This Listing does not exist");
-        res.redirect("/listings");
+      req.flash("error","Sorry! your requested listing doesnot exist...");
+      res.redirect("/listings");
     }
+    
+    let response = await geocodingClient.forwardGeocode({
+      query: listing.location,
+      limit: 1
+    })
+    .send();
+    listing.geometry = response.body.features[0].geometry;
     res.render("listings/show.ejs", {listing});
 }
